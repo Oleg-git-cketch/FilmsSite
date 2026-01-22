@@ -1,125 +1,240 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Регистрация</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Регистрация — КиноМир</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent-color: #38bdf8;
-            --hover-bg: #334155;
+            --bg-color:     #0a0a0f;
+            --surface:      #111118;
+            --card-bg:      #1a1a24;
+            --border:       rgba(255,255,255,0.10);
+            --text-primary: #f1f5f9;
+            --text-secondary:#94a3b8;
+            --accent:       #e50914;
+            --accent-hover: #f40612;
+            --error:        #ef4444;
+            --hover-bg:     #1f1f2e;
         }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
 
         body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg-color);
             color: var(--text-primary);
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        .register-card {
-            background-color: var(--card-bg);
-            padding: 40px;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 400px;
-            box-sizing: border-box;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(10,10,15,0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .register-card h1 {
-            text-align: center;
-            color: var(--accent-color);
-            margin-bottom: 30px;
+        .logo {
             font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.7rem 1.3rem;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        nav a:hover { background: var(--hover-bg); }
+
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            margin-top: 80px;
+        }
+
+        .auth-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 3rem 2.5rem;
+            width: 100%;
+            max-width: 480px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            transition: transform 0.3s ease;
+        }
+
+        .auth-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .auth-title {
+            text-align: center;
+            font-size: 2.1rem;
+            font-weight: 700;
+            margin-bottom: 2.2rem;
+            color: white;
         }
 
         form {
             display: flex;
             flex-direction: column;
+            gap: 1.3rem;
         }
 
-        form label {
-            margin-bottom: 5px;
-            font-weight: 600;
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        input {
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #0d0d14;
             color: var(--text-primary);
+            font-size: 1.05rem;
+            transition: all 0.2s;
         }
 
-        form input {
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.1);
-            background-color: #0f172a;
-            color: var(--text-primary);
-        }
-
-        form input:focus {
+        input:focus {
             outline: none;
-            border-color: var(--accent-color);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(229,9,20,0.15);
         }
 
-        button {
-            padding: 12px;
+        input[type="file"] {
+            padding: 0.6rem;
+            background: transparent;
+        }
+
+        .submit-btn {
+            margin-top: 1.2rem;
+            padding: 1.1rem;
+            background: var(--accent);
+            color: white;
             border: none;
-            border-radius: 8px;
-            background-color: var(--accent-color);
-            color: var(--text-primary);
+            border-radius: 10px;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.25s;
         }
 
-        button:hover {
-            background-color: #0ea5e9;
+        .submit-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
         }
 
-        ul.errors {
-            margin-top: 20px;
-            padding-left: 20px;
-            color: #f87171;
+        .errors {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(239,68,68,0.12);
+            border: 1px solid rgba(239,68,68,0.3);
+            border-radius: 10px;
+            color: var(--error);
+            font-size: 0.95rem;
         }
 
-        ul.errors li {
-            margin-bottom: 5px;
-            font-size: 0.9rem;
+        .errors li {
+            margin-bottom: 0.4rem;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.8rem;
+            color: var(--text-secondary);
+            font-size: 0.98rem;
+        }
+
+        .login-link a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .auth-card { padding: 2.2rem 1.6rem; }
         }
     </style>
 </head>
 <body>
 
-<div class="register-card">
-    <h1>Регистрация</h1>
+<header>
+    <a href="/" class="logo">КиноМир</a>
+    <nav>
+        <a href="/login">Вход</a>
+    </nav>
+</header>
 
-    <form method="POST" action="/register" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Подтвердить</button>
-    </form>
+<main>
+    <div class="auth-card">
+        <h1 class="auth-title">Регистрация</h1>
 
-    {% if form.errors %}
-        <ul class="errors">
+        <form method="POST" action="/register" enctype="multipart/form-data">
+            {% csrf_token %}
+
             {% for field in form %}
-                {% for error in field.errors %}
-                    <li>{{ field.label }}: {{ error }}</li>
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+            </div>
+            {% endfor %}
+
+            <button type="submit" class="submit-btn">Создать аккаунт</button>
+        </form>
+
+        {% if form.errors %}
+        <div class="errors">
+            <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ field.label }}: {{ error }}</li>
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
-            {% for error in form.non_field_errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-</div>
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <div class="login-link">
+            Уже есть аккаунт? <a href="/login">Войти</a>
+        </div>
+    </div>
+</main>
 
 </body>
 </html>

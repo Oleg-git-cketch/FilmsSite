@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
-from .models import Category, Film, User
+from .models import Category, Film, User, Comments, LikeComment
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from .forms import UserRegister, Search
+
 
 # Create your views here.
 def home(request):
@@ -17,9 +18,11 @@ def home(request):
 
 def film(request, pk):
     film_id = Film.objects.get(id=pk)
+    comments = Comments.objects.filter(comment_film=film_id)
 
     context =  {
-        'film': film_id
+        'film': film_id,
+        'comment': comments,
     }
     return render(request, 'film.html', context)
 
@@ -86,4 +89,24 @@ def search(request):
         if query:
             films = Film.objects.filter(film_name__icontains=query)  # поиск по части названия
             return render(request, 'search_results.html', {'films': films, 'query': query})
+    return redirect('/')
+
+def comment_page(request, pk):
+    if request.method == 'POST':
+        comment = request.POST.get('comment')
+        if comment:
+            film = Film.objects.get(id=pk)
+            user = request.user
+            Comments.objects.create(comment_film=film, comment_text=comment, comment_user=user)
+            return redirect(f'/film/{pk}')
+    return redirect('/')
+
+def add_like(request, pk):
+    if request.method == 'POST':
+        comment = Comments.objects.get(id=pk)
+        if comment:
+            LikeComment.objects.create(like_comment=comment, like_user=request.user)
+            comment.comment_likes += 1
+            comment.save(update_fields=['comment_likes'])
+            return redirect(f'/film/{comment.comment_film.id}')
     return redirect('/')

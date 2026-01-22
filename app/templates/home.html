@@ -373,9 +373,7 @@
         <div class="film-grid">
             {% for film in films %}
             <a href="/film/{{ film.id }}" class="film-item">
-                <div class="film-poster-placeholder">
-                    <i class="fas fa-film fa-3x"></i>
-                </div>
+                <img src="{{ film.film_poster.url }}" alt="poster">
                 <div class="film-content">
                     <h2 class="film-name">{{ film.film_name }}</h2>
                     <p class="description-preview">{{ film.film_description }}</p>
