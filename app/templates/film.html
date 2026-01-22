@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ film.film_name }} — КиноМир</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #0a0a0f;
+            --card-bg: #111118;
+            --surface: #1a1a24;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent: #e50914;        /* Netflix-красный для акцентов */
+            --accent-hover: #f40612;
+            --rating: #f5c518;        /* Золотой рейтинг */
+            --border: rgba(255,255,255,0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.2rem 5%;
+            background: rgba(10,10,15,0.85);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .back-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: color 0.25s;
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+        }
+
+        /* Main content */
+        main {
+            padding: 140px 5% 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .film-hero {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 2.5rem;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.8));
+        }
+
+        .film-backdrop {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.45);
+            z-index: -1;
+        }
+
+        .film-content {
+            position: relative;
+            padding: 4rem 3rem;
+            background: linear-gradient(to right, rgba(10,10,15,0.92) 40%, transparent 70%);
+        }
+
+        @media (max-width: 768px) {
+            .film-content {
+                padding: 3rem 1.8rem;
+                background: rgba(10,10,15,0.9);
+            }
+        }
+
+        .film-title {
+            font-size: clamp(2.8rem, 7vw, 4.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.7);
+        }
+
+        .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1.8rem;
+            font-size: 1.05rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rating-badge {
+            background: rgba(245,197,24,0.15);
+            color: var(--rating);
+            padding: 0.35rem 0.9rem;
+            border-radius: 6px;
+            font-weight: 600;
+            border: 1px solid rgba(245,197,24,0.4);
+        }
+
+        .category-tag {
+            background: rgba(229,9,20,0.12);
+            color: var(--accent);
+            padding: 0.35rem 1rem;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .category-tag:hover {
+            background: rgba(229,9,20,0.25);
+        }
+
+        .description {
+            font-size: 1.1rem;
+            max-width: 720px;
+            margin-bottom: 2.5rem;
+            color: var(--text-secondary);
+        }
+
+        .video-wrapper {
+            margin: 3rem 0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        }
+
+        iframe {
+            width: 100%;
+            height: 620px;
+            border: none;
+        }
+
+        .actions {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.9rem 1.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-outline:hover {
+            background: rgba(229,9,20,0.08);
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            main { padding: 100px 4% 40px; }
+            iframe { height: 360px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="/" class="logo">КиноМир</a>
+    <a href="/" class="back-link">
+        <i class="fas fa-arrow-left"></i> На главную
+    </a>
+</header>
+
+<main>
+    <div class="film-hero">
+        <!-- Если есть фон-постер — подставь сюда -->
+        <!-- <div class="film-backdrop" style="background-image: url('{{ film.backdrop_url|default:'https://via.placeholder.com/1400x700/111118/22222a?text=Backdrop' }}');"></div> -->
+
+        <div class="film-content">
+            <h1 class="film-title">{{ film.film_name }}</h1>
+
+            <div class="meta">
+                <div class="meta-item">
+                    <span class="rating-badge">★ {{ film.film_rating }}</span>
+                </div>
+                <div class="meta-item">
+                    <a href="/category/{{ film.film_category.category_name }}/" class="category-tag">
+                        {{ film.film_category.category_name }}
+                    </a>
+                </div>
+                <div class="meta-item">
+                    <i class="far fa-calendar-alt"></i>
+                    {{ film.film_date }}
+                </div>
+            </div>
+
+            <div class="description">
+                {{ film.film_description }}
+            </div>
+
+            <div class="actions">
+                <form method="POST" action="/favourite/{{ film.id }}/" style="margin:0;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-heart"></i> Добавить в избранное
+                    </button>
+                </form>
+
+                <!-- Можно добавить кнопку "Смотреть трейлер" или "Похожие фильмы" -->
+                <!-- <a href="#" class="btn btn-outline"><i class="fas fa-play"></i> Трейлер</a> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="video-wrapper">
+        <iframe width="560" height="315" src="{{ film.film_video }}"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+</main>
+
+<footer>
+    © 2026 КиноМир — Все права защищены
+</footer>
+
+</body>
+</html>
