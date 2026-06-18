@@ -218,6 +218,82 @@
             }
             .film-poster { height: 280px; }
         }
+        .username {
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .username:hover {
+            color: var(--accent);
+        }
+
+        .username-edit {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .username-edit input {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            color: white;
+        }
+
+        .username-edit button {
+            padding: 6px 10px;
+            background: var(--accent);
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .info-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 12px 14px;
+            border-radius: 12px;
+
+            transition: 0.2s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+        }
+
+        .info-card i {
+            font-size: 20px;
+            color: var(--accent);
+        }
+
+        .info-title {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .info-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -237,8 +313,7 @@
 </header>
 
 <main>
-    <form id="avatarForm" method="POST" action="/change_avatar/" enctype="multipart/form-data">
-        {% csrf_token %}
+        <div class="profile-header">
 
         <div class="avatar-wrapper">
             <label for="avatarInput" style="cursor:pointer;">
@@ -251,24 +326,61 @@
                 {% endif %}
             </label>
 
-            <input
-                type="file"
-                name="avatar"
-                id="avatarInput"
-                accept="image/*"
-                style="display:none;"
-            >
+            <input type="file" id="avatarInput" name="avatar" hidden>
         </div>
-    </form>
 
         <div class="user-info">
-            <div class="username">{{ user.username }}</div>
-            <div class="favourites-count">
-                <i class="fas fa-heart"></i>
-                Избранных фильмов: {{ user.user_favourites.count }}
+
+            <!-- username + edit -->
+            <div class="username-wrapper">
+                <span id="usernameText" class="username">
+                    {{ user.username }}
+                </span>
+
+                <div id="usernameEdit" class="username-edit hidden">
+                    <input type="text" id="usernameInput" value="{{ user.username }}">
+                    <button id="saveUsernameBtn">Сохранить</button>
+                </div>
             </div>
+
+            <!-- info cards -->
+            <div class="info-grid">
+
+                <div class="info-card">
+                    <i class="fas fa-heart"></i>
+                    <div>
+                        <div class="info-title">Избранное</div>
+                        <div class="info-value">{{ user.user_favourites.count }}</div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <i class="fas fa-film"></i>
+                    <div>
+                        <div class="info-title">Любимых фильмов</div>
+                        <div class="info-value">{{ user.user_favourites.count }}</div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <i class="fas fa-user-clock"></i>
+                    <div>
+                        <div class="info-title">Статус</div>
+                        <div class="info-value">
+                            {% if user.is_superuser %}
+                                Админ
+                            {% else %}
+                                Пользователь
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
     </div>
+
 
     <h1 class="page-title">Ваши избранные фильмы</h1>
 
@@ -303,6 +415,56 @@
 document.getElementById('avatarInput').addEventListener('change', function () {
     document.getElementById('avatarForm').submit();
 });
+
+const usernameText = document.getElementById("usernameText");
+const editBox = document.getElementById("usernameEdit");
+const input = document.getElementById("usernameInput");
+const btn = document.getElementById("saveUsernameBtn");
+
+// открыть редактирование
+usernameText.addEventListener("click", () => {
+    editBox.classList.remove("hidden");
+    input.focus();
+});
+
+// сохранить
+btn.addEventListener("click", async () => {
+    const newName = input.value.trim();
+
+    if (!newName) return;
+
+    const res = await fetch("/change_username/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken")
+        },
+        body: JSON.stringify({ username: newName })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+        usernameText.textContent = newName;
+        editBox.classList.add("hidden");
+    }
+});
+
+// CSRF helper
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 </script>
 </body>
 </html>

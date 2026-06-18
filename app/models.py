@@ -14,6 +14,7 @@ class Category(models.Model):
 
 class Film(models.Model):
     film_name = models.CharField(max_length=128)
+    film_search = models.CharField(max_length=128, default='')
     film_video = models.URLField()
     film_poster = models.ImageField(upload_to='posters', null=True)
     film_description = models.TextField()

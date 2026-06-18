@@ -319,20 +319,139 @@
             .search-form { width: 100%; max-width: none; }
             .main-content { padding: 2rem 5%; }
         }
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            position: fixed;
+        }
+
+        /* ОБЯЗАТЕЛЬНО */
+        .header-search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .search-results {
+            position: absolute;
+            top: 100%;   /* прямо под поиском */
+            left: 0;
+            width: 100%;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-top: 6px;
+            z-index: 2000;
+
+            max-height: 300px;
+            overflow-y: auto;
+
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* элементы результата */
+        .search-results a {
+            display: block;
+            padding: 10px 14px;
+            color: var(--text-primary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .search-results a:hover {
+            background: var(--hover-bg);
+        }
+        <!-- В <style> добавь/замени эти стили -->
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-top: 8px;
+            z-index: 2000;
+            max-height: 480px;
+            overflow-y: auto;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            padding: 6px 0;
+        }
+
+        .search-results a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 10px 14px;
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 2px 6px;
+            transition: all 0.2s ease;
+        }
+
+        .search-results a:hover {
+            background: var(--hover-bg);
+            transform: translateX(4px);
+        }
+
+        .search-results .poster-small {
+            width: 30px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
+            background: #111118;
+            flex-shrink: 0;
+        }
+
+        .search-results .search-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .search-results .film-name {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .search-results .search-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .search-results .rating {
+            color: var(--rating);
+            font-weight: 700;
+        }
+
+        .search-results p {
+            text-align: center;
+            padding: 20px 10px;
+            color: var(--text-secondary);
+        }
     </style>
 </head>
 <body>
 
 <header>
     <a href="/" class="logo">КиноМир</a>
-
     <nav>
         {% if user.is_authenticated %}
-            <form method="POST" action="/search/" class="search-form">
-                {% csrf_token %}
-                <input type="text" name="query" placeholder="Поиск фильма..." required>
-                <button type="submit">Искать</button>
-            </form>
+            <div class="header-search-wrapper">
+                <div class="search-form">
+                    <input type="text" id="searchInput" placeholder="Поиск фильма...">
+                </div>
+
+                <div id="searchResults" class="search-results"></div>
+            </div>
             <a href="/profile">Профиль</a>
             <a href="/logout">Выйти</a>
         {% else %}
@@ -402,6 +521,45 @@
     toggleBtn.addEventListener('click', () => {
         sidebar.classList.toggle('collapsed');
         localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+    });
+
+    const input = document.getElementById('searchInput');
+    const results = document.getElementById('searchResults');
+
+    let timeout = null;
+
+    input.addEventListener('input', function () {
+        clearTimeout(timeout);
+
+        const query = this.value;
+
+        timeout = setTimeout(() => {
+            if (query.length === 0) {
+                results.innerHTML = "";
+                return;
+            }
+
+            fetch(`/search/?q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => {
+                    results.innerHTML = "";
+
+                    if (data.length === 0) {
+                        results.innerHTML = "<p>Ничего не найдено</p>";
+                        return;
+                    }
+
+                    data.forEach(film => {
+                        results.innerHTML += `
+                            <a href="/film/${film.id}" class="film-item">
+                                <div class="film-content">
+                                    <h2 class="film-name">${film.film_name} (${film.film_date})</h2>
+                                </div>
+                            </a>
+                        `;
+                    });
+                });
+        }, 300); // debounce (чтобы не спамить сервер)
     });
 </script>
 

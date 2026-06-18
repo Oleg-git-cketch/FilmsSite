@@ -22,11 +22,7 @@
             --hover-bg:     #1f1f2e;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', system-ui, sans-serif;
@@ -37,474 +33,189 @@
         }
 
         header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            background: rgba(10,10,15,0.9);
-            backdrop-filter: blur(12px);
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(10,10,15,0.9); backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
-            padding: 1.2rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 1.2rem 5%; display: flex; justify-content: space-between; align-items: center;
         }
 
-        .logo {
-            font-size: 1.7rem;
-            font-weight: 700;
-            color: var(--accent);
-            text-decoration: none;
-        }
+        .logo { font-size: 1.7rem; font-weight: 700; color: var(--accent); text-decoration: none; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; }
+        .back-link:hover { color: var(--accent); }
 
-        .back-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            transition: color 0.25s;
-        }
-
-        .back-link:hover {
-            color: var(--accent);
-        }
-
-        main {
-            padding: 140px 5% 80px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        main { padding: 140px 5% 80px; max-width: 1200px; margin: 0 auto; }
 
         .film-hero {
-            display: flex;
-            gap: 3rem;
-            background: var(--surface);
-            border-radius: 16px;
-            overflow: hidden;
-            margin-bottom: 3.5rem;
-            border: 1px solid var(--border);
+            display: flex; gap: 3rem; background: var(--surface); border-radius: 16px;
+            overflow: hidden; margin-bottom: 3.5rem; border: 1px solid var(--border);
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
 
-        .film-poster-wrapper {
-            flex: 0 0 340px;
-            position: relative;
-        }
-
-        .film-poster {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
+        .film-poster-wrapper { flex: 0 0 340px; position: relative; }
+        .film-poster { width: 100%; height: 100%; object-fit: cover; }
         .poster-placeholder {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, #1a1a24, #111118);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #555;
-            font-size: 5rem;
+            position: absolute; inset: 0; background: linear-gradient(135deg, #1a1a24, #111118);
+            display: flex; align-items: center; justify-content: center; color: #555; font-size: 5rem;
         }
 
-        .film-info {
-            flex: 1;
-            padding: 3.5rem 3rem 3rem 0;
-        }
+        .film-info { flex: 1; padding: 3.5rem 3rem 3rem 0; }
+        .film-title { font-size: clamp(2.6rem, 6vw, 4.5rem); font-weight: 700; margin-bottom: 1.2rem; color: white; }
 
-        @media (max-width: 992px) {
-            .film-hero {
-                flex-direction: column;
-            }
-            .film-poster-wrapper {
-                flex: 0 0 auto;
-                height: 480px;
-            }
-            .film-info {
-                padding: 2.5rem 2.5rem 3rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            main { padding: 110px 5% 60px; }
-            .film-poster-wrapper { height: 420px; }
-            .film-info { padding: 2rem 2rem 2.5rem; }
-        }
-
-        .film-title {
-            font-size: clamp(2.6rem, 6vw, 4.5rem);
-            font-weight: 700;
-            margin-bottom: 1.2rem;
-            color: white;
-        }
-
-        .meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.6rem;
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-
+        .meta { display: flex; flex-wrap: wrap; gap: 1.6rem; margin-bottom: 2rem; font-size: 1.1rem; }
         .rating-badge {
-            background: rgba(245,197,24,0.15);
-            color: var(--rating);
-            padding: 0.4rem 1rem;
-            border-radius: 8px;
-            font-weight: 600;
-            border: 1px solid rgba(245,197,24,0.4);
+            background: rgba(245,197,24,0.15); color: var(--rating); padding: 0.4rem 1rem;
+            border-radius: 8px; font-weight: 600; border: 1px solid rgba(245,197,24,0.4);
         }
-
         .category-tag {
-            background: rgba(229,9,20,0.12);
-            color: var(--accent);
-            padding: 0.4rem 1.1rem;
-            border-radius: 20px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            text-decoration: none;
-            transition: all 0.2s;
+            background: rgba(229,9,20,0.12); color: var(--accent); padding: 0.4rem 1.1rem;
+            border-radius: 20px; font-size: 0.95rem; font-weight: 500; text-decoration: none;
         }
+        .category-tag:hover { background: rgba(229,9,20,0.28); }
 
-        .category-tag:hover {
-            background: rgba(229,9,20,0.28);
-        }
+        .description { font-size: 1.15rem; max-width: 760px; margin-bottom: 2.8rem; color: var(--text-secondary); }
 
-        .description {
-            font-size: 1.15rem;
-            max-width: 760px;
-            margin-bottom: 2.8rem;
-            color: var(--text-secondary);
-        }
-
-        .video-wrapper {
-            margin: 3.5rem 0;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-        }
-
-        iframe {
-            width: 100%;
-            height: 620px;
-            border: none;
-        }
-
-        @media (max-width: 768px) {
-            iframe { height: 380px; }
-        }
-
-        .actions {
-            display: flex;
-            gap: 1.4rem;
-            flex-wrap: wrap;
-        }
+        .video-wrapper { margin: 3.5rem 0; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+        iframe { width: 100%; height: 620px; border: none; }
+        @media (max-width: 768px) { iframe { height: 380px; } }
 
         .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.7rem;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s;
-            cursor: pointer;
+            display: inline-flex; align-items: center; gap: 0.7rem; padding: 1rem 2rem;
+            border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s;
         }
+        .btn-primary { background: var(--accent); color: white; border: none; }
+        .btn-primary:hover { background: var(--accent-hover); transform: translateY(-3px); }
 
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background: var(--accent-hover);
-            transform: translateY(-3px);
-        }
-
-        /* Комментарии (оставил как было — уже стилизовано) */
+        /* Комментарии */
         .comments-section {
-            background: var(--surface);
-            border-radius: 16px;
-            padding: 2.8rem;
-            border: 1px solid var(--border);
-            margin: 4rem 0;
+            background: var(--surface); border-radius: 16px; padding: 2.8rem;
+            border: 1px solid var(--border); margin: 4rem 0;
         }
-
-        .section-title {
-            font-size: 1.9rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-            color: white;
-        }
-
-        .comments-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.8rem;
-        }
+        .section-title { font-size: 1.9rem; font-weight: 700; margin-bottom: 2rem; color: white; }
+        .comments-list { display: flex; flex-direction: column; gap: 1.8rem; }
 
         .comment-item {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 1.6rem;
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
+            background: var(--card-bg); border-radius: 12px; padding: 1.6rem;
+            border: 1px solid var(--border); transition: all 0.3s ease;
         }
-
         .comment-item:hover {
-            border-color: var(--accent);
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+            border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.4);
         }
 
-        .comment-header {
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-            margin-bottom: 1.2rem;
-        }
-
+        .comment-header { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 1.2rem; }
         .comment-avatar {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            overflow: hidden;
-            background: var(--surface);
-            border: 3px solid var(--accent);
-            flex-shrink: 0;
+            width: 52px; height: 52px; border-radius: 50%; overflow: hidden;
+            background: var(--surface); border: 3px solid var(--accent); flex-shrink: 0;
         }
-
-        .comment-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
+        .comment-avatar img { width: 100%; height: 100%; object-fit: cover; }
         .avatar-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(229,9,20,0.18);
-            color: var(--accent);
-            font-size: 1.6rem;
+            width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+            background: rgba(229,9,20,0.18); color: var(--accent); font-size: 1.6rem;
         }
 
-        .comment-meta {
-            flex: 1;
-        }
+        .comment-meta { flex: 1; }
+        .comment-author { font-weight: 600; color: white; font-size: 1.1rem; margin-bottom: 0.2rem; }
+        .comment-date { font-size: 0.88rem; color: var(--text-secondary); }
+        .comment-body { margin-bottom: 1.6rem; color: var(--text-primary); font-size: 1.05rem; line-height: 1.65; }
 
-        .comment-author {
-            font-weight: 600;
-            color: white;
-            font-size: 1.1rem;
-            display: block;
-            margin-bottom: 0.2rem;
-        }
-
-        .comment-date {
-            font-size: 0.88rem;
-            color: var(--text-secondary);
-        }
-
-        .comment-body {
-            margin-bottom: 1.2rem;
-            color: var(--text-primary);
-            font-size: 1.05rem;
-            line-height: 1.65;
-        }
-
-        .comment-actions {
-            display: flex;
-            gap: 1.8rem;
-        }
-
+        .comment-actions { display: flex; gap: 1.8rem; margin-top: 0.8rem; }
         .action-btn {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: color 0.2s;
+            background: none; border: none; color: var(--text-secondary);
+            display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem;
+            cursor: pointer; transition: color 0.2s;
+        }
+        .action-btn:hover { color: var(--accent); }
+        .action-btn i { font-size: 1.2rem; }
+
+        .reply-item {
+            margin-top: 1rem; margin-left: 60px; padding: 1rem;
+            border-left: 2px solid var(--accent); background: rgba(255,255,255,0.02);
+            border-radius: 10px;
         }
 
-        .action-btn:hover {
-            color: var(--accent);
-        }
-
-        .action-btn i {
-            font-size: 1.2rem;
-        }
-
-        .comment-form-wrapper {
-            margin-top: 3rem;
-            padding-top: 2.2rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .comment-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-        }
-
-        .comment-form textarea {
-            padding: 1.3rem;
+        .reply-form {
+            margin-top: 1rem;
+            margin-left: 60px;
+            padding: 1.2rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
             border-radius: 12px;
+
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            animation: replyFade 0.2s ease-out;
+        }
+
+        @keyframes replyFade {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reply-form textarea {
+            width: 100%;
+            padding: 1rem 1.1rem;
+            border-radius: 10px;
             border: 1px solid var(--border);
             background: #0d0d14;
             color: var(--text-primary);
-            font-size: 1.05rem;
-            resize: vertical;
-            min-height: 120px;
-            transition: all 0.2s;
+            font-size: 1rem;
+            resize: none;
+            min-height: 90px;
+            transition: all 0.25s ease;
         }
 
-        .comment-form textarea:focus {
+        .reply-form textarea:focus {
             outline: none;
             border-color: var(--accent);
             box-shadow: 0 0 0 4px rgba(229,9,20,0.15);
         }
 
-        .submit-comment-btn {
-            align-self: flex-start;
-            padding: 1rem 2.2rem;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 1.05rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.7rem;
-            transition: all 0.3s;
+        .reply-form button {
+            margin-top: 0.8rem;
+            width: fit-content;
         }
 
-        .submit-comment-btn:hover {
-            background: var(--accent-hover);
-            transform: translateY(-3px);
+        .reply-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+
+        .comment-form-wrapper { margin-top: 3rem; padding-top: 2.2rem; border-top: 1px solid var(--border); }
+        .comment-form { display: flex; flex-direction: column; gap: 1.2rem; }
+        .comment-form textarea {
+            padding: 1.3rem; border-radius: 12px; border: 1px solid var(--border);
+            background: #0d0d14; color: var(--text-primary); font-size: 1.05rem;
+            resize: vertical; min-height: 120px;
         }
+        .comment-form textarea:focus {
+            outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(229,9,20,0.15);
+        }
+        .submit-comment-btn {
+            align-self: flex-start; padding: 1rem 2.2rem; background: var(--accent);
+            color: white; border: none; border-radius: 10px; font-weight: 600;
+            font-size: 1.05rem; cursor: pointer; display: flex; align-items: center; gap: 0.7rem;
+        }
+        .submit-comment-btn:hover { background: var(--accent-hover); transform: translateY(-3px); }
 
         .no-comments {
-            text-align: center;
-            padding: 3.5rem 1.5rem;
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-            background: rgba(255,255,255,0.03);
-            border-radius: 12px;
-            border: 1px dashed var(--border);
+            text-align: center; padding: 3.5rem 1.5rem; color: var(--text-secondary);
+            font-size: 1.2rem; background: rgba(255,255,255,0.03);
+            border-radius: 12px; border: 1px dashed var(--border);
         }
 
         footer {
-            text-align: center;
-            padding: 3.5rem 0 2rem;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            border-top: 1px solid var(--border);
-        }
-        .login-required {
-            text-align: center;
-            padding: 30px;
-            background: #1f1f1f;
-            border-radius: 15px;
-            border: 1px solid #333;
+            text-align: center; padding: 3.5rem 0 2rem; color: var(--text-secondary);
+            font-size: 0.95rem; border-top: 1px solid var(--border);
         }
 
-        .login-required i {
-            font-size: 40px;
-            margin-bottom: 15px;
-            color: #ff4757;
+        .login-required { text-align: center; padding: 30px; background: #1f1f1f; border-radius: 15px; border: 1px solid #333; }
+        .auth-buttons { display: flex; justify-content: center; gap: 12px; margin-top: 15px; }
+        .login-btn, .register-btn {
+            padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600;
         }
-
-        .login-required h3 {
-            margin-bottom: 10px;
-            color: white;
-        }
-
-        .login-required p {
-            color: #bdbdbd;
-            margin-bottom: 20px;
-        }
-
-        .auth-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .login-btn,
-        .register-btn {
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        .login-btn {
-            background: #333;
-            color: white;
-        }
-
-        .register-btn {
-            background: #e50914;
-            color: white;
-        }
-
-        .login-btn:hover,
-        .register-btn:hover {
-            transform: translateY(-2px);
-        }
-        .reply-item {
-            margin-top: 1rem;
-            margin-left: 60px;
-            padding: 1rem;
-            border-left: 2px solid var(--accent);
-            background: rgba(255,255,255,0.02);
-            border-radius: 10px;
-        }
-
-        /* 👇 ВАЖНО: отступ снизу у блока комментария перед кнопками */
-        .comment-body {
-            margin-bottom: 1.6rem; /* было 1.2rem — чуть увеличили */
-        }
-
-        /* 👇 разделяет ответы от кнопок */
-        .comment-actions {
-            display: flex;
-            gap: 1.8rem;
-            margin-top: 0.8rem; /* добавь */
-        }
-
-        /* 👇 чтобы ответы не прилипали к следующему элементу */
-        .reply-item:last-child {
-            margin-bottom: 1rem;
-        }
-
-        .reply-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 6px;
-        }
+        .login-btn { background: #333; color: white; }
+        .register-btn { background: var(--accent); color: white; }
     </style>
 </head>
 <body>
@@ -522,36 +233,23 @@
             {% if film.film_poster %}
             <img src="{{ film.film_poster.url }}" alt="{{ film.film_name }}" class="film-poster">
             {% else %}
-            <div class="poster-placeholder">
-                <i class="fas fa-film"></i>
-            </div>
+            <div class="poster-placeholder"><i class="fas fa-film"></i></div>
             {% endif %}
         </div>
 
         <div class="film-info">
             <h1 class="film-title">{{ film.film_name }}</h1>
-
             <div class="meta">
+                <div class="meta-item"><span class="rating-badge">★ {{ film.film_rating }}</span></div>
                 <div class="meta-item">
-                    <span class="rating-badge">★ {{ film.film_rating }}</span>
+                    <a href="/category/{{ film.film_category.category_name }}/" class="category-tag">{{ film.film_category.category_name }}</a>
                 </div>
-                <div class="meta-item">
-                    <a href="/category/{{ film.film_category.category_name }}/" class="category-tag">
-                        {{ film.film_category.category_name }}
-                    </a>
-                </div>
-                <div class="meta-item">
-                    <i class="far fa-calendar-alt"></i>
-                    {{ film.film_date }}
-                </div>
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> {{ film.film_date }}</div>
             </div>
-
-            <div class="description">
-                {{ film.film_description }}
-            </div>
+            <div class="description">{{ film.film_description }}</div>
 
             <div class="actions">
-                <form method="POST" action="/favourite/{{ film.id }}/" style="margin:0;">
+                <form id="favourite-form" method="POST" action="/favourite/{{ film.id }}/" style="margin:0;">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-heart"></i> Добавить в избранное
@@ -562,8 +260,7 @@
     </div>
 
     <div class="video-wrapper">
-        <iframe width="560" height="315" src="{{ film.film_video }}"
-                title="YouTube video player" frameborder="0"
+        <iframe src="{{ film.film_video }}" title="YouTube video player" frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
@@ -574,25 +271,20 @@
             Комментарии <span style="color: var(--text-secondary); font-size: 1.1rem;">({{ comments|length }})</span>
         </h2>
 
-        {% if comments %}
-        <div class="comments-list">
+        <div id="comments-list" class="comments-list">
             {% for comment in comments %}
-            <div class="comment-item">
+            <div class="comment-item" id="comment-{{ comment.id }}">
                 <div class="comment-header">
                     <div class="comment-avatar">
                         {% if comment.comment_user.user_avatar %}
-                        <img src="{{ comment.comment_user.user_avatar.url }}" alt="{{ comment.user.username }}">
+                        <img src="{{ comment.comment_user.user_avatar.url }}" alt="{{ comment.comment_user.username }}">
                         {% else %}
-                        <div class="avatar-placeholder">
-                            <i class="fas fa-user"></i>
-                        </div>
+                        <div class="avatar-placeholder"><i class="fas fa-user"></i></div>
                         {% endif %}
                     </div>
                     <div class="comment-meta">
                         <span class="comment-author">{{ comment.comment_user.username }}</span>
-                        <span class="comment-date">
-                                {{ comment.created_at|date:"d M Y в H:i" }}
-                            </span>
+                        <span class="comment-date">{{ comment.created_at|date:"d M Y в H:i" }}</span>
                     </div>
                 </div>
 
@@ -601,71 +293,62 @@
                 </div>
 
                 {% for reply in comment.replies.all %}
-                    <div class="reply-item">
-                        <div class="reply-header">
-                            <div class="comment-avatar" style="width:40px;height:40px;">
-                                {% if reply.comment_user.user_avatar %}
-                                    <img src="{{ reply.comment_user.user_avatar.url }}">
-                                {% else %}
-                                    <div class="avatar-placeholder"><i class="fas fa-user"></i></div>
-                                {% endif %}
-                            </div>
-
-                            <div class="comment-meta">
-                                <span class="comment-author">{{ reply.comment_user.username }}</span>
-                                <span class="comment-date">{{ reply.comment_added|date:"d M Y H:i" }}</span>
-                            </div>
+                <div class="reply-item">
+                    <div class="reply-header">
+                        <div class="comment-avatar" style="width:40px;height:40px;">
+                            {% if reply.comment_user.user_avatar %}
+                            <img src="{{ reply.comment_user.user_avatar.url }}">
+                            {% else %}
+                            <div class="avatar-placeholder"><i class="fas fa-user"></i></div>
+                            {% endif %}
                         </div>
-
-                        <div class="comment-body" style="margin-top:8px;">
-                            {{ reply.comment_text }}
+                        <div class="comment-meta">
+                            <span class="comment-author">{{ reply.comment_user.username }}</span>
+                            <span class="comment-date">{{ reply.comment_added|date:"d M Y H:i" }}</span>
                         </div>
                     </div>
+                    <div class="comment-body" style="margin-top:8px;">{{ reply.comment_text }}</div>
+                </div>
                 {% endfor %}
 
                 <div class="comment-actions">
-                    <form method="post" action="/add/like/comment/{{ comment.id }}">
+                    <form class="like-form" data-id="{{ comment.id }}" method="post" action="/add/like/comment/{{ comment.id }}">
                         {% csrf_token %}
-                        <button type="submit" class="action-btn like-btn" title="Нравится">
+                        <button type="submit" class="action-btn like-btn">
                             <i class="{% if comment.id in liked_comments %}fas{% else %}far{% endif %} fa-thumbs-up"
-                               style="{% if comment.id in liked_comments %}color:red{% endif %}">
-                            </i>
-                            <span>{{ comment.comment_likes|default:0 }}</span>
+                               style="{% if comment.id in liked_comments %}color:red{% endif %}"></i>
+                            <span class="like-count">{{ comment.comment_likes|default:0 }}</span>
                         </button>
                     </form>
-                    <button type="button" class="action-btn reply-btn"
-                            onclick="toggleReply({{ comment.id }})">
+                    <button type="button" class="action-btn reply-btn" onclick="toggleReply({{ comment.id }})">
                         <i class="far fa-reply"></i> Ответить
                     </button>
                 </div>
-                <div class="reply-form" id="reply-form-{{ comment.id }}" style="display:none; margin-top: 1rem;">
-                    <form method="POST" action="/comment/reply/{{ comment.id }}" class="comment-form">
+
+                <div class="reply-form" id="reply-form-{{ comment.id }}" style="display:none;">
+                    <form class="reply-form-ajax" ...>
                         {% csrf_token %}
-                        <textarea name="reply" placeholder="Ваш ответ..." rows="3" required></textarea>
+                        <textarea name="reply" placeholder="Напишите ответ..." required></textarea>
                         <button type="submit" class="submit-comment-btn">
-                            <i class="fas fa-paper-plane"></i> Отправить ответ
+                            <i class="fas fa-paper-plane"></i> Ответить
                         </button>
                     </form>
                 </div>
             </div>
             {% endfor %}
         </div>
-        {% else %}
-        <div class="no-comments">
+
+        {% if not comments %}
+        <div id="no-comments" class="no-comments">
             <p>Пока никто не оставил комментарий. Будьте первым!</p>
         </div>
         {% endif %}
 
         <div class="comment-form-wrapper">
             {% if user.is_authenticated %}
-                <form method="POST" action="/comment/add/{{ film.id }}" class="comment-form">
+                <form id="main-comment-form" method="POST" action="/comment/add/{{ film.id }}" class="comment-form">
                     {% csrf_token %}
-                    <textarea
-                            name="comment"
-                            placeholder="Напишите ваш комментарий..."
-                            rows="4"
-                            required
-                    ></textarea>
+                    <textarea name="comment" placeholder="Напишите ваш комментарий..." rows="4" required></textarea>
                     <button type="submit" class="submit-comment-btn">
                         <i class="fas fa-paper-plane"></i> Отправить
                     </button>
@@ -675,7 +358,6 @@
                 <i class="fas fa-comment-slash"></i>
                 <h3>Хотите оставить комментарий?</h3>
                 <p>Зарегистрируйтесь или войдите в аккаунт, чтобы участвовать в обсуждении фильма.</p>
-
                 <div class="auth-buttons">
                     <a href="/login" class="login-btn">Войти</a>
                     <a href="/register" class="register-btn">Зарегистрироваться</a>
@@ -686,25 +368,118 @@
     </section>
 </main>
 
-<footer>
-    © 2026 КиноМир — Все права защищены
-</footer>
+<footer>© 2026 КиноМир — Все права защищены</footer>
+
 <script>
+function getCSRFToken() {
+    return document.querySelector('[name=csrfmiddlewaretoken]').value;
+}
+
+async function ajaxSubmit(form, successCallback) {
+    const formData = new FormData(form);
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': getCSRFToken()
+            }
+        });
+        const data = await response.json();
+
+        if (data.success || data.html) {
+            successCallback(data);
+            form.reset();
+        } else {
+            alert(data.error || 'Ошибка при отправке');
+        }
+    } catch (e) {
+        alert('Ошибка соединения');
+    }
+}
+
+// Главный комментарий
+const mainForm = document.getElementById('main-comment-form');
+if (mainForm) {
+    mainForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        ajaxSubmit(this, function(data) {
+            const list = document.getElementById('comments-list');
+            const noComments = document.getElementById('no-comments');
+            if (noComments) noComments.style.display = 'none';
+
+            // Вставляем новый комментарий (используем html из бэкенда)
+            list.insertAdjacentHTML('afterbegin', data.html);
+        });
+    });
+}
+
+// Лайки
+document.addEventListener('submit', function(e) {
+    if (e.target.classList.contains('like-form')) {
+        e.preventDefault();
+        const form = e.target;
+        const countSpan = form.querySelector('.like-count');
+        const icon = form.querySelector('i');
+
+        ajaxSubmit(form, function(data) {
+            countSpan.textContent = data.likes;
+            if (data.liked) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                icon.style.color = 'red';
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                icon.style.color = '';
+            }
+        });
+    }
+});
+
+// Ответы
+document.addEventListener('submit', function(e) {
+    if (e.target.classList.contains('reply-form-ajax')) {
+        e.preventDefault();
+        const form = e.target;
+        const commentId = form.dataset.id;
+
+        ajaxSubmit(form, function(data) {
+            const parent = document.getElementById(`comment-${commentId}`);
+            const replyForm = document.getElementById(`reply-form-${commentId}`);
+            replyForm.style.display = 'none';
+
+            // Вставляем ответ
+            let repliesContainer = parent.querySelector('.reply-item:last-of-type');
+            if (repliesContainer) {
+                repliesContainer.insertAdjacentHTML('afterend', data.html);
+            } else {
+                const actions = parent.querySelector('.comment-actions');
+                actions.insertAdjacentHTML('afterend', data.html);
+            }
+        });
+    }
+});
+
+// Избранное
+const favForm = document.getElementById('favourite-form');
+if (favForm) {
+    favForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        ajaxSubmit(this, function(data) {
+            alert(data.message || 'Готово!');
+        });
+    });
+}
+
+// Toggle reply
 function toggleReply(id) {
     const form = document.getElementById(`reply-form-${id}`);
-
-    // закрываем все открытые формы (чтобы была одна)
     document.querySelectorAll('.reply-form').forEach(el => {
         if (el !== form) el.style.display = 'none';
     });
-
-    // toggle текущей
-    if (form.style.display === 'none' || form.style.display === '') {
-        form.style.display = 'block';
-        form.scrollIntoView({ behavior: "smooth", block: "center" });
-    } else {
-        form.style.display = 'none';
-    }
+    form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
 }
 </script>
 </body>
