@@ -33,14 +33,32 @@ class User(AbstractUser):
     user_avatar = models.ImageField(upload_to='avatars')
 
 
+
 class Comments(models.Model):
-    comment_film =  models.ForeignKey(Film, on_delete=models.CASCADE)
+    comment_film = models.ForeignKey(Film, on_delete=models.CASCADE)
     comment_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     comment_text = models.TextField()
     comment_likes = models.IntegerField(default=0)
     comment_dislikes = models.IntegerField(default=0)
     comment_added = models.DateTimeField(auto_now_add=True)
 
+    parent = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='replies'
+    )
+
+    def __str__(self):
+        return f'{self.comment_film.film_name}, {self.comment_text}'
+
 class LikeComment(models.Model):
     like_comment = models.ForeignKey(Comments, on_delete=models.CASCADE)
     like_user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('like_comment', 'like_user')
+
+    def __str__(self):
+        return f"{self.like_user} -> {self.like_comment}"

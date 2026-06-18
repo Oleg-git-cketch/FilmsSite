@@ -3,6 +3,7 @@ from .models import Category, Film, User, Comments, LikeComment
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from .forms import UserRegister, Search
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -18,11 +19,15 @@ def home(request):
 
 def film(request, pk):
     film_id = Film.objects.get(id=pk)
-    comments = Comments.objects.filter(comment_film=film_id)
+    comments = Comments.objects.filter(comment_film=film_id, parent__isnull=True)
+    liked_comments = LikeComment.objects.filter(
+        like_user=request.user
+    ).values_list('like_comment_id', flat=True)
 
     context =  {
         'film': film_id,
-        'comment': comments,
+        'comments': comments,
+        'liked_comments': liked_comments
     }
     return render(request, 'film.html', context)
 
@@ -59,6 +64,8 @@ def login_page(request):
         form = AuthenticationForm()
     return render(request, 'register/login.html', {'form': form})
 
+
+@login_required(login_url='/login')
 def profile(request):
     user = request.user
 
@@ -67,6 +74,18 @@ def profile(request):
     }
     return render(request, 'profile.html', context)
 
+def change_avatar(request):
+    if request.method == 'POST':
+        avatar = request.FILES.get('avatar')
+
+        if avatar:
+            request.user.user_avatar = avatar
+            request.user.save(update_fields=['user_avatar'])
+
+    return redirect('/profile')
+
+
+@login_required(login_url='/login')
 def favourite(request, pk):
     if request.method == 'POST':
         film = Film.objects.get(id=pk)
@@ -91,6 +110,8 @@ def search(request):
             return render(request, 'search_results.html', {'films': films, 'query': query})
     return redirect('/')
 
+
+@login_required(login_url='/login')
 def comment_page(request, pk):
     if request.method == 'POST':
         comment = request.POST.get('comment')
@@ -101,12 +122,36 @@ def comment_page(request, pk):
             return redirect(f'/film/{pk}')
     return redirect('/')
 
-def add_like(request, pk):
+def comment_reply(request, pk):
     if request.method == 'POST':
-        comment = Comments.objects.get(id=pk)
+        comment = request.POST.get('reply')
         if comment:
-            LikeComment.objects.create(like_comment=comment, like_user=request.user)
-            comment.comment_likes += 1
-            comment.save(update_fields=['comment_likes'])
-            return redirect(f'/film/{comment.comment_film.id}')
-    return redirect('/')
+            parent_comment = Comments.objects.get(id=pk)
+
+            Comments.objects.create(
+                comment_film=parent_comment.comment_film,
+                comment_user=request.user,
+                comment_text=comment,
+                parent=parent_comment
+            )
+            return redirect(f'/film/{parent_comment.comment_film.id}')
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+
+@login_required(login_url='/login')
+def add_like(request, pk):
+    comment = Comments.objects.get(id=pk)
+
+    like, created = LikeComment.objects.get_or_create(
+        like_comment=comment,
+        like_user=request.user
+    )
+
+    if not created:
+        like.delete()
+        comment.comment_likes -= 1
+    else:
+        comment.comment_likes += 1
+
+    comment.save(update_fields=['comment_likes'])
+    return redirect(f'/film/{comment.comment_film.id}')

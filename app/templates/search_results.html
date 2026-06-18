@@ -185,9 +185,7 @@
         <div class="films-grid">
             {% for film in films %}
             <a href="/film/{{ film.id }}" class="film-item">
-                <div class="film-poster-placeholder">
-                    <i class="fas fa-film"></i>
-                </div>
+                <img src="{{ film.film_poster.url }}" alt="{{ film.film_name }}" class="film-poster">
                 <div class="film-content">
                     <div class="film-name">{{ film.film_name }}</div>
                     <p class="description-preview">{{ film.film_description }}</p>

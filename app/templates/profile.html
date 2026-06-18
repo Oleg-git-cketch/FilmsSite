@@ -237,16 +237,29 @@
 </header>
 
 <main>
-    <div class="profile-header">
+    <form id="avatarForm" method="POST" action="/change_avatar/" enctype="multipart/form-data">
+        {% csrf_token %}
+
         <div class="avatar-wrapper">
-            {% if user.user_avatar %}
-                <img src="{{ user.user_avatar.url }}" alt="{{ user.username }}" class="avatar">
-            {% else %}
-                <div class="avatar avatar-placeholder">
-                    <i class="fas fa-user"></i>
-                </div>
-            {% endif %}
+            <label for="avatarInput" style="cursor:pointer;">
+                {% if user.user_avatar %}
+                    <img src="{{ user.user_avatar.url }}" class="avatar">
+                {% else %}
+                    <div class="avatar avatar-placeholder">
+                        <i class="fas fa-user"></i>
+                    </div>
+                {% endif %}
+            </label>
+
+            <input
+                type="file"
+                name="avatar"
+                id="avatarInput"
+                accept="image/*"
+                style="display:none;"
+            >
         </div>
+    </form>
 
         <div class="user-info">
             <div class="username">{{ user.username }}</div>
@@ -263,10 +276,9 @@
         {% for film in user.user_favourites.all %}
         <a href="/film/{{ film.id }}" class="film-card">
             <div class="film-poster">
-                {% if film.poster_url %}  <!-- Если заведёшь поле poster_url в модели Film -->
-                    <img src="{{ film.poster_url }}" alt="{{ film.film_name }}">
+                {% if film.film_poster %}
+                    <img src="{{ film.film_poster.url }}" alt="{{ film.film_name }}" class="film-poster">
                 {% elif film.film_video and film.film_video|slice:":32" == "https://www.youtube.com" %}
-                    <!-- Можно генерировать thumbnail из YouTube, но пока placeholder -->
                     <div class="film-poster-placeholder">
                         <i class="fas fa-film"></i>
                     </div>
@@ -287,6 +299,10 @@
         {% endfor %}
     </div>
 </main>
-
+<script>
+document.getElementById('avatarInput').addEventListener('change', function () {
+    document.getElementById('avatarForm').submit();
+});
+</script>
 </body>
 </html>

@@ -420,6 +420,91 @@
             font-size: 0.95rem;
             border-top: 1px solid var(--border);
         }
+        .login-required {
+            text-align: center;
+            padding: 30px;
+            background: #1f1f1f;
+            border-radius: 15px;
+            border: 1px solid #333;
+        }
+
+        .login-required i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: #ff4757;
+        }
+
+        .login-required h3 {
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .login-required p {
+            color: #bdbdbd;
+            margin-bottom: 20px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .login-btn,
+        .register-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .login-btn {
+            background: #333;
+            color: white;
+        }
+
+        .register-btn {
+            background: #e50914;
+            color: white;
+        }
+
+        .login-btn:hover,
+        .register-btn:hover {
+            transform: translateY(-2px);
+        }
+        .reply-item {
+            margin-top: 1rem;
+            margin-left: 60px;
+            padding: 1rem;
+            border-left: 2px solid var(--accent);
+            background: rgba(255,255,255,0.02);
+            border-radius: 10px;
+        }
+
+        /* 👇 ВАЖНО: отступ снизу у блока комментария перед кнопками */
+        .comment-body {
+            margin-bottom: 1.6rem; /* было 1.2rem — чуть увеличили */
+        }
+
+        /* 👇 разделяет ответы от кнопок */
+        .comment-actions {
+            display: flex;
+            gap: 1.8rem;
+            margin-top: 0.8rem; /* добавь */
+        }
+
+        /* 👇 чтобы ответы не прилипали к следующему элементу */
+        .reply-item:last-child {
+            margin-bottom: 1rem;
+        }
+
+        .reply-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
     </style>
 </head>
 <body>
@@ -495,8 +580,8 @@
             <div class="comment-item">
                 <div class="comment-header">
                     <div class="comment-avatar">
-                        {% if comment.user.user_avatar %}
-                        <img src="{{ comment.user.user_avatar.url }}" alt="{{ comment.user.username }}">
+                        {% if comment.comment_user.user_avatar %}
+                        <img src="{{ comment.comment_user.user_avatar.url }}" alt="{{ comment.user.username }}">
                         {% else %}
                         <div class="avatar-placeholder">
                             <i class="fas fa-user"></i>
@@ -504,7 +589,7 @@
                         {% endif %}
                     </div>
                     <div class="comment-meta">
-                        <span class="comment-author">{{ comment.user.username }}</span>
+                        <span class="comment-author">{{ comment.comment_user.username }}</span>
                         <span class="comment-date">
                                 {{ comment.created_at|date:"d M Y в H:i" }}
                             </span>
@@ -515,17 +600,52 @@
                     <p>{{ comment.comment_text|linebreaksbr }}</p>
                 </div>
 
+                {% for reply in comment.replies.all %}
+                    <div class="reply-item">
+                        <div class="reply-header">
+                            <div class="comment-avatar" style="width:40px;height:40px;">
+                                {% if reply.comment_user.user_avatar %}
+                                    <img src="{{ reply.comment_user.user_avatar.url }}">
+                                {% else %}
+                                    <div class="avatar-placeholder"><i class="fas fa-user"></i></div>
+                                {% endif %}
+                            </div>
+
+                            <div class="comment-meta">
+                                <span class="comment-author">{{ reply.comment_user.username }}</span>
+                                <span class="comment-date">{{ reply.comment_added|date:"d M Y H:i" }}</span>
+                            </div>
+                        </div>
+
+                        <div class="comment-body" style="margin-top:8px;">
+                            {{ reply.comment_text }}
+                        </div>
+                    </div>
+                {% endfor %}
+
                 <div class="comment-actions">
                     <form method="post" action="/add/like/comment/{{ comment.id }}">
                         {% csrf_token %}
                         <button type="submit" class="action-btn like-btn" title="Нравится">
-                            <i class="far fa-thumbs-up"></i>
+                            <i class="{% if comment.id in liked_comments %}fas{% else %}far{% endif %} fa-thumbs-up"
+                               style="{% if comment.id in liked_comments %}color:red{% endif %}">
+                            </i>
                             <span>{{ comment.comment_likes|default:0 }}</span>
                         </button>
                     </form>
-                    <button class="action-btn reply-btn" title="Ответить">
+                    <button type="button" class="action-btn reply-btn"
+                            onclick="toggleReply({{ comment.id }})">
                         <i class="far fa-reply"></i> Ответить
                     </button>
+                </div>
+                <div class="reply-form" id="reply-form-{{ comment.id }}" style="display:none; margin-top: 1rem;">
+                    <form method="POST" action="/comment/reply/{{ comment.id }}" class="comment-form">
+                        {% csrf_token %}
+                        <textarea name="reply" placeholder="Ваш ответ..." rows="3" required></textarea>
+                        <button type="submit" class="submit-comment-btn">
+                            <i class="fas fa-paper-plane"></i> Отправить ответ
+                        </button>
+                    </form>
                 </div>
             </div>
             {% endfor %}
@@ -537,18 +657,31 @@
         {% endif %}
 
         <div class="comment-form-wrapper">
-            <form method="POST" action="/comment/add/{{ film.id }}" class="comment-form">
-                {% csrf_token %}
-                <textarea
-                        name="comment"
-                        placeholder="Напишите ваш комментарий..."
-                        rows="4"
-                        required
-                ></textarea>
-                <button type="submit" class="submit-comment-btn">
-                    <i class="fas fa-paper-plane"></i> Отправить
-                </button>
-            </form>
+            {% if user.is_authenticated %}
+                <form method="POST" action="/comment/add/{{ film.id }}" class="comment-form">
+                    {% csrf_token %}
+                    <textarea
+                            name="comment"
+                            placeholder="Напишите ваш комментарий..."
+                            rows="4"
+                            required
+                    ></textarea>
+                    <button type="submit" class="submit-comment-btn">
+                        <i class="fas fa-paper-plane"></i> Отправить
+                    </button>
+                </form>
+            {% else %}
+            <div class="login-required">
+                <i class="fas fa-comment-slash"></i>
+                <h3>Хотите оставить комментарий?</h3>
+                <p>Зарегистрируйтесь или войдите в аккаунт, чтобы участвовать в обсуждении фильма.</p>
+
+                <div class="auth-buttons">
+                    <a href="/login" class="login-btn">Войти</a>
+                    <a href="/register" class="register-btn">Зарегистрироваться</a>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </section>
 </main>
@@ -556,6 +689,23 @@
 <footer>
     © 2026 КиноМир — Все права защищены
 </footer>
+<script>
+function toggleReply(id) {
+    const form = document.getElementById(`reply-form-${id}`);
 
+    // закрываем все открытые формы (чтобы была одна)
+    document.querySelectorAll('.reply-form').forEach(el => {
+        if (el !== form) el.style.display = 'none';
+    });
+
+    // toggle текущей
+    if (form.style.display === 'none' || form.style.display === '') {
+        form.style.display = 'block';
+        form.scrollIntoView({ behavior: "smooth", block: "center" });
+    } else {
+        form.style.display = 'none';
+    }
+}
+</script>
 </body>
 </html>
