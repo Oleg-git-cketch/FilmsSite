@@ -197,7 +197,7 @@
     <div class="auth-card">
         <h1 class="auth-title">Вход</h1>
 
-        <form method="POST" action="/login">
+        <form method="POST" action="/login/">
             {% csrf_token %}
 
             {% for field in form %}

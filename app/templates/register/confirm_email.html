@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Подтверждение email</title>
+    <style>
+        body {
+            background: #0a0a0f;
+            color: white;
+            font-family: Arial;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .box {
+            background: #1a1a24;
+            padding: 30px;
+            border-radius: 12px;
+            width: 350px;
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+        }
+
+        button {
+            margin-top: 15px;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            background: #e50914;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .error {
+            color: #ff4d4d;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>Подтверждение email</h2>
+
+    <p>Код отправлен на:</p>
+    <b>{{ email }}</b>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="text" name="code" placeholder="Введите 6-значный код">
+
+        <button type="submit">Подтвердить</button>
+    </form>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+</div>
+
+</body>
+</html>

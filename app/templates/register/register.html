@@ -202,7 +202,7 @@
     <div class="auth-card">
         <h1 class="auth-title">Регистрация</h1>
 
-        <form method="POST" action="/register" enctype="multipart/form-data">
+        <form method="POST" action="/register/" enctype="multipart/form-data">
             {% csrf_token %}
 
             {% for field in form %}
@@ -231,7 +231,7 @@
         {% endif %}
 
         <div class="login-link">
-            Уже есть аккаунт? <a href="/login">Войти</a>
+            Уже есть аккаунт? <a href="/login/">Войти</a>
         </div>
     </div>
 </main>

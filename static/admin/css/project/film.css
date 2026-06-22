@@ -1,0 +1,273 @@
+:root {
+            --bg-color:     #0a0a0f;
+            --surface:      #111118;
+            --card-bg:      #1a1a24;
+            --border:       rgba(255,255,255,0.08);
+            --text-primary: #f1f5f9;
+            --text-secondary:#94a3b8;
+            --accent:       #e50914;
+            --accent-hover: #f40612;
+            --rating:       #f5c518;
+            --hover-bg:     #1f1f2e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        main { padding: 140px 5% 80px; max-width: 1200px; margin: 0 auto; }
+
+        .film-hero {
+            display: flex; gap: 3rem; background: var(--surface); border-radius: 16px;
+            overflow: hidden; margin-bottom: 3.5rem; border: 1px solid var(--border);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .film-poster-wrapper { flex: 0 0 340px; position: relative; }
+        .film-poster { width: 100%; height: 100%; object-fit: cover; }
+        .poster-placeholder {
+            position: absolute; inset: 0; background: linear-gradient(135deg, #1a1a24, #111118);
+            display: flex; align-items: center; justify-content: center; color: #555; font-size: 5rem;
+        }
+
+        .film-info { flex: 1; padding: 3.5rem 3rem 3rem 0; }
+        .film-title { font-size: clamp(2.6rem, 6vw, 4.5rem); font-weight: 700; margin-bottom: 1.2rem; color: white; }
+
+        .meta { display: flex; flex-wrap: wrap; gap: 1.6rem; margin-bottom: 2rem; font-size: 1.1rem; }
+        .rating-badge {
+            background: rgba(245,197,24,0.15); color: var(--rating); padding: 0.4rem 1rem;
+            border-radius: 8px; font-weight: 600; border: 1px solid rgba(245,197,24,0.4);
+        }
+        .category-tag {
+            background: rgba(229,9,20,0.12); color: var(--accent); padding: 0.4rem 1.1rem;
+            border-radius: 20px; font-size: 0.95rem; font-weight: 500; text-decoration: none;
+        }
+        .category-tag:hover { background: rgba(229,9,20,0.28); }
+
+        .description { font-size: 1.15rem; max-width: 760px; margin-bottom: 2.8rem; color: var(--text-secondary); }
+
+        .video-wrapper { margin: 3.5rem 0; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+        iframe { width: 100%; height: 620px; border: none; }
+        @media (max-width: 768px) { iframe { height: 380px; } }
+
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.7rem; padding: 1rem 2rem;
+            border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s;
+        }
+        .btn-primary { background: var(--accent); color: white; border: none; }
+        .btn-primary:hover { background: var(--accent-hover); transform: translateY(-3px); }
+
+        /* Комментарии */
+        .comments-section {
+            background: var(--surface); border-radius: 16px; padding: 2.8rem;
+            border: 1px solid var(--border); margin: 4rem 0;
+        }
+        .section-title { font-size: 1.9rem; font-weight: 700; margin-bottom: 2rem; color: white; }
+        .comments-list { display: flex; flex-direction: column; gap: 1.8rem; }
+
+        .comment-item {
+            background: var(--card-bg); border-radius: 12px; padding: 1.6rem;
+            border: 1px solid var(--border); transition: all 0.3s ease;
+        }
+        .comment-item:hover {
+            border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+        }
+
+        .comment-header { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 1.2rem; }
+        .comment-avatar {
+            width: 52px; height: 52px; border-radius: 50%; overflow: hidden;
+            background: var(--surface); border: 3px solid var(--accent); flex-shrink: 0;
+        }
+        .comment-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .avatar-placeholder {
+            width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+            background: rgba(229,9,20,0.18); color: var(--accent); font-size: 1.6rem;
+        }
+
+        .comment-meta { flex: 1; }
+        .comment-author { font-weight: 600; color: white; font-size: 1.1rem; margin-bottom: 0.2rem; }
+        .comment-date { font-size: 0.88rem; color: var(--text-secondary); }
+        .comment-body { margin-bottom: 1.6rem; color: var(--text-primary); font-size: 1.05rem; line-height: 1.65; }
+
+        .comment-actions { display: flex; gap: 1.8rem; margin-top: 0.8rem; }
+        .action-btn {
+            background: none; border: none; color: var(--text-secondary);
+            display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem;
+            cursor: pointer; transition: color 0.2s;
+        }
+        .action-btn:hover { color: var(--accent); }
+        .action-btn i { font-size: 1.2rem; }
+
+        .reply-item {
+            margin-top: 1rem; margin-left: 60px; padding: 1rem;
+            border-left: 2px solid var(--accent); background: rgba(255,255,255,0.02);
+            border-radius: 10px;
+        }
+
+        .reply-form {
+            margin-top: 1rem;
+            margin-left: 60px;
+            padding: 1.2rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            animation: replyFade 0.2s ease-out;
+        }
+
+        @keyframes replyFade {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reply-form textarea {
+            width: 100%;
+            padding: 1rem 1.1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #0d0d14;
+            color: var(--text-primary);
+            font-size: 1rem;
+            resize: none;
+            min-height: 90px;
+            transition: all 0.25s ease;
+        }
+
+        .reply-form textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(229,9,20,0.15);
+        }
+
+        .reply-form button {
+            margin-top: 0.8rem;
+            width: fit-content;
+        }
+
+        .reply-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+
+        .comment-form-wrapper { margin-top: 3rem; padding-top: 2.2rem; border-top: 1px solid var(--border); }
+        .comment-form { display: flex; flex-direction: column; gap: 1.2rem; }
+        .comment-form textarea {
+            padding: 1.3rem; border-radius: 12px; border: 1px solid var(--border);
+            background: #0d0d14; color: var(--text-primary); font-size: 1.05rem;
+            resize: vertical; min-height: 120px;
+        }
+        .comment-form textarea:focus {
+            outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(229,9,20,0.15);
+        }
+        .submit-comment-btn {
+            align-self: flex-start; padding: 1rem 2.2rem; background: var(--accent);
+            color: white; border: none; border-radius: 10px; font-weight: 600;
+            font-size: 1.05rem; cursor: pointer; display: flex; align-items: center; gap: 0.7rem;
+        }
+        .submit-comment-btn:hover { background: var(--accent-hover); transform: translateY(-3px); }
+
+        .no-comments {
+            text-align: center; padding: 3.5rem 1.5rem; color: var(--text-secondary);
+            font-size: 1.2rem; background: rgba(255,255,255,0.03);
+            border-radius: 12px; border: 1px dashed var(--border);
+        }
+
+        footer {
+            text-align: center; padding: 3.5rem 0 2rem; color: var(--text-secondary);
+            font-size: 0.95rem; border-top: 1px solid var(--border);
+        }
+
+        .login-required { text-align: center; padding: 30px; background: #1f1f1f; border-radius: 15px; border: 1px solid #333; }
+        .auth-buttons { display: flex; justify-content: center; gap: 12px; margin-top: 15px; }
+        .login-btn, .register-btn {
+            padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600;
+        }
+        .login-btn { background: #333; color: white; }
+        .register-btn { background: var(--accent); color: white; }
+
+        /* Кнопка избранного */
+        .btn-favourite {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1.1rem 2.2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            background: #1a1a24;
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+        }
+
+        .btn-favourite:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .btn-favourite i {
+            transition: all 0.3s ease;
+            font-size: 1.3rem;
+        }
+
+        .btn-favourite.added {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .btn-favourite.added i {
+            color: white;
+            animation: heartBeat 0.6s ease;
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        /* Анимация при добавлении */
+        @keyframes addedToast {
+            0% { opacity: 0; transform: translateY(20px); }
+            20% { opacity: 1; transform: translateY(0); }
+            80% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+
+        /* Админ бейдж */
+        .admin-badge {
+            background: #e50914;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 6px rgba(229, 9, 20, 0.3);
+        }
+
+        .user-badge {
+            background: #334155;
+            color: #e2e8f0;
+            font-size: 0.73rem;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 12px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            border: 1px solid #475569;
+        }

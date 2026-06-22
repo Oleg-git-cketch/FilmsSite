@@ -8,224 +8,60 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <style>
-        :root {
-            --bg-color:     #0a0a0f;
-            --surface:      #111118;
-            --card-bg:      #1a1a24;
-            --border:       rgba(255,255,255,0.08);
-            --text-primary: #f1f5f9;
-            --text-secondary:#94a3b8;
-            --accent:       #e50914;
-            --accent-hover: #f40612;
-            --rating:       #f5c518;
-            --hover-bg:     #1f1f2e;
-        }
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'admin/css/project/film.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/css/project/main_header.css' %}">
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: var(--bg-color);
-            color: var(--text-primary);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-
-        header {
-            position: fixed; top: 0; width: 100%; z-index: 1000;
-            background: rgba(10,10,15,0.9); backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            padding: 1.2rem 5%; display: flex; justify-content: space-between; align-items: center;
-        }
-
-        .logo { font-size: 1.7rem; font-weight: 700; color: var(--accent); text-decoration: none; }
-        .back-link { color: var(--text-secondary); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; }
-        .back-link:hover { color: var(--accent); }
-
-        main { padding: 140px 5% 80px; max-width: 1200px; margin: 0 auto; }
-
-        .film-hero {
-            display: flex; gap: 3rem; background: var(--surface); border-radius: 16px;
-            overflow: hidden; margin-bottom: 3.5rem; border: 1px solid var(--border);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-
-        .film-poster-wrapper { flex: 0 0 340px; position: relative; }
-        .film-poster { width: 100%; height: 100%; object-fit: cover; }
-        .poster-placeholder {
-            position: absolute; inset: 0; background: linear-gradient(135deg, #1a1a24, #111118);
-            display: flex; align-items: center; justify-content: center; color: #555; font-size: 5rem;
-        }
-
-        .film-info { flex: 1; padding: 3.5rem 3rem 3rem 0; }
-        .film-title { font-size: clamp(2.6rem, 6vw, 4.5rem); font-weight: 700; margin-bottom: 1.2rem; color: white; }
-
-        .meta { display: flex; flex-wrap: wrap; gap: 1.6rem; margin-bottom: 2rem; font-size: 1.1rem; }
-        .rating-badge {
-            background: rgba(245,197,24,0.15); color: var(--rating); padding: 0.4rem 1rem;
-            border-radius: 8px; font-weight: 600; border: 1px solid rgba(245,197,24,0.4);
-        }
-        .category-tag {
-            background: rgba(229,9,20,0.12); color: var(--accent); padding: 0.4rem 1.1rem;
-            border-radius: 20px; font-size: 0.95rem; font-weight: 500; text-decoration: none;
-        }
-        .category-tag:hover { background: rgba(229,9,20,0.28); }
-
-        .description { font-size: 1.15rem; max-width: 760px; margin-bottom: 2.8rem; color: var(--text-secondary); }
-
-        .video-wrapper { margin: 3.5rem 0; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
-        iframe { width: 100%; height: 620px; border: none; }
-        @media (max-width: 768px) { iframe { height: 380px; } }
-
-        .btn {
-            display: inline-flex; align-items: center; gap: 0.7rem; padding: 1rem 2rem;
-            border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s;
-        }
-        .btn-primary { background: var(--accent); color: white; border: none; }
-        .btn-primary:hover { background: var(--accent-hover); transform: translateY(-3px); }
-
-        /* Комментарии */
-        .comments-section {
-            background: var(--surface); border-radius: 16px; padding: 2.8rem;
-            border: 1px solid var(--border); margin: 4rem 0;
-        }
-        .section-title { font-size: 1.9rem; font-weight: 700; margin-bottom: 2rem; color: white; }
-        .comments-list { display: flex; flex-direction: column; gap: 1.8rem; }
-
-        .comment-item {
-            background: var(--card-bg); border-radius: 12px; padding: 1.6rem;
-            border: 1px solid var(--border); transition: all 0.3s ease;
-        }
-        .comment-item:hover {
-            border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.4);
-        }
-
-        .comment-header { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 1.2rem; }
-        .comment-avatar {
-            width: 52px; height: 52px; border-radius: 50%; overflow: hidden;
-            background: var(--surface); border: 3px solid var(--accent); flex-shrink: 0;
-        }
-        .comment-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .avatar-placeholder {
-            width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
-            background: rgba(229,9,20,0.18); color: var(--accent); font-size: 1.6rem;
-        }
-
-        .comment-meta { flex: 1; }
-        .comment-author { font-weight: 600; color: white; font-size: 1.1rem; margin-bottom: 0.2rem; }
-        .comment-date { font-size: 0.88rem; color: var(--text-secondary); }
-        .comment-body { margin-bottom: 1.6rem; color: var(--text-primary); font-size: 1.05rem; line-height: 1.65; }
-
-        .comment-actions { display: flex; gap: 1.8rem; margin-top: 0.8rem; }
-        .action-btn {
-            background: none; border: none; color: var(--text-secondary);
-            display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem;
-            cursor: pointer; transition: color 0.2s;
-        }
-        .action-btn:hover { color: var(--accent); }
-        .action-btn i { font-size: 1.2rem; }
-
-        .reply-item {
-            margin-top: 1rem; margin-left: 60px; padding: 1rem;
-            border-left: 2px solid var(--accent); background: rgba(255,255,255,0.02);
-            border-radius: 10px;
-        }
-
-        .reply-form {
-            margin-top: 1rem;
-            margin-left: 60px;
-            padding: 1.2rem;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-
-            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-            animation: replyFade 0.2s ease-out;
-        }
-
-        @keyframes replyFade {
-            from {
-                opacity: 0;
-                transform: translateY(-8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .reply-form textarea {
-            width: 100%;
-            padding: 1rem 1.1rem;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: #0d0d14;
-            color: var(--text-primary);
-            font-size: 1rem;
-            resize: none;
-            min-height: 90px;
-            transition: all 0.25s ease;
-        }
-
-        .reply-form textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(229,9,20,0.15);
-        }
-
-        .reply-form button {
-            margin-top: 0.8rem;
-            width: fit-content;
-        }
-
-        .reply-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-
-        .comment-form-wrapper { margin-top: 3rem; padding-top: 2.2rem; border-top: 1px solid var(--border); }
-        .comment-form { display: flex; flex-direction: column; gap: 1.2rem; }
-        .comment-form textarea {
-            padding: 1.3rem; border-radius: 12px; border: 1px solid var(--border);
-            background: #0d0d14; color: var(--text-primary); font-size: 1.05rem;
-            resize: vertical; min-height: 120px;
-        }
-        .comment-form textarea:focus {
-            outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(229,9,20,0.15);
-        }
-        .submit-comment-btn {
-            align-self: flex-start; padding: 1rem 2.2rem; background: var(--accent);
-            color: white; border: none; border-radius: 10px; font-weight: 600;
-            font-size: 1.05rem; cursor: pointer; display: flex; align-items: center; gap: 0.7rem;
-        }
-        .submit-comment-btn:hover { background: var(--accent-hover); transform: translateY(-3px); }
-
-        .no-comments {
-            text-align: center; padding: 3.5rem 1.5rem; color: var(--text-secondary);
-            font-size: 1.2rem; background: rgba(255,255,255,0.03);
-            border-radius: 12px; border: 1px dashed var(--border);
-        }
-
-        footer {
-            text-align: center; padding: 3.5rem 0 2rem; color: var(--text-secondary);
-            font-size: 0.95rem; border-top: 1px solid var(--border);
-        }
-
-        .login-required { text-align: center; padding: 30px; background: #1f1f1f; border-radius: 15px; border: 1px solid #333; }
-        .auth-buttons { display: flex; justify-content: center; gap: 12px; margin-top: 15px; }
-        .login-btn, .register-btn {
-            padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600;
-        }
-        .login-btn { background: #333; color: white; }
-        .register-btn { background: var(--accent); color: white; }
-    </style>
 </head>
 <body>
 
-<header>
-    <a href="/" class="logo">КиноМир</a>
-    <a href="/" class="back-link">
-        <i class="fas fa-arrow-left"></i> На главную
-    </a>
-</header>
+    <!-- Затемнение фона -->
+    <div id="searchOverlay" class="search-overlay"></div>
+
+    <!-- Первая шапка -->
+    <header>
+        <a href="/" class="logo">КиноМир</a>
+        <nav>
+            <div class="header-search-wrapper">
+                <div class="search-form">
+                    <input type="text" id="searchInput" placeholder="Поиск фильма...">
+                </div>
+                <div id="searchResults" class="search-results"></div>
+            </div>
+
+            <div class="nav-right">
+                {% if user.is_authenticated %}
+                    <a href="/profile/{{ user.id }}">Профиль</a>
+                    <a href="/logout">Выйти</a>
+                {% else %}
+                    <a class="login" href="/login">Войти</a>
+                    <a class="register" href="/register">Регистрация</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <!-- Вторая шапка — Категории -->
+    <nav class="category-nav">
+        <div class="category-container">
+            {% for category in categories %}
+                <div class="dropdown">
+                    <a href="#" class="main-category">
+                        {{ category.category_name }}
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-content">
+                        {% for sub in category.subcategories.all %}
+                            <a href="/category/{{ category.id }}/sub/{{ sub.id }}/">{{ sub.sub_category_name }}</a>
+                        {% empty %}
+                            <a href="#" class="no-sub">Подкатегорий пока нет</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </nav>
 
 <main>
     <div class="film-hero">
@@ -242,20 +78,27 @@
             <div class="meta">
                 <div class="meta-item"><span class="rating-badge">★ {{ film.film_rating }}</span></div>
                 <div class="meta-item">
-                    <a href="/category/{{ film.film_category.category_name }}/" class="category-tag">{{ film.film_category.category_name }}</a>
+                    <a href="/category/{{ film.film_subcategory.main_category.id }}/sub/{{ film.film_subcategory.id }}" class="category-tag">{{ film.film_subcategory.sub_category_name }}</a>
                 </div>
                 <div class="meta-item"><i class="far fa-calendar-alt"></i> {{ film.film_date }}</div>
             </div>
             <div class="description">{{ film.film_description }}</div>
 
-            <div class="actions">
-                <form id="favourite-form" method="POST" action="/favourite/{{ film.id }}/" style="margin:0;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-heart"></i> Добавить в избранное
-                    </button>
-                </form>
-            </div>
+        <div class="actions">
+            <form id="favourite-form" method="POST" action="/favourite/{{ film.id }}/" style="margin:0;">
+                {% csrf_token %}
+                <button type="submit" id="favourite-btn" class="btn btn-favourite {% if is_favourite %}added{% endif %}">
+                    <i class="fas fa-heart"></i>
+                    <span class="btn-text">
+                        {% if is_favourite %}
+                            В избранном
+                        {% else %}
+                            Добавить в избранное
+                        {% endif %}
+                    </span>
+                </button>
+            </form>
+        </div>
         </div>
     </div>
 
@@ -266,221 +109,127 @@
     </div>
 
     <!-- Комментарии -->
-    <section class="comments-section">
-        <h2 class="section-title">
-            Комментарии <span style="color: var(--text-secondary); font-size: 1.1rem;">({{ comments|length }})</span>
-        </h2>
+    <!-- Комментарии -->
+        <section class="comments-section">
+            <h2 class="section-title">
+                Комментарии <span style="color: var(--text-secondary); font-size: 1.1rem;">({{ comments|length }})</span>
+            </h2>
 
-        <div id="comments-list" class="comments-list">
-            {% for comment in comments %}
-            <div class="comment-item" id="comment-{{ comment.id }}">
-                <div class="comment-header">
-                    <div class="comment-avatar">
-                        {% if comment.comment_user.user_avatar %}
-                        <img src="{{ comment.comment_user.user_avatar.url }}" alt="{{ comment.comment_user.username }}">
-                        {% else %}
-                        <div class="avatar-placeholder"><i class="fas fa-user"></i></div>
-                        {% endif %}
-                    </div>
-                    <div class="comment-meta">
-                        <span class="comment-author">{{ comment.comment_user.username }}</span>
-                        <span class="comment-date">{{ comment.created_at|date:"d M Y в H:i" }}</span>
-                    </div>
-                </div>
-
-                <div class="comment-body">
-                    <p>{{ comment.comment_text|linebreaksbr }}</p>
-                </div>
-
-                {% for reply in comment.replies.all %}
-                <div class="reply-item">
-                    <div class="reply-header">
-                        <div class="comment-avatar" style="width:40px;height:40px;">
-                            {% if reply.comment_user.user_avatar %}
-                            <img src="{{ reply.comment_user.user_avatar.url }}">
+            <div id="comments-list" class="comments-list">
+                {% for comment in comments %}
+                <div class="comment-item" id="comment-{{ comment.id }}">
+                    <div class="comment-header">
+                        <div class="comment-avatar">
+                            {% if comment.comment_user.user_avatar %}
+                            <img src="{{ comment.comment_user.user_avatar.url }}" alt="{{ comment.comment_user.username }}">
                             {% else %}
                             <div class="avatar-placeholder"><i class="fas fa-user"></i></div>
                             {% endif %}
                         </div>
                         <div class="comment-meta">
-                            <span class="comment-author">{{ reply.comment_user.username }}</span>
-                            <span class="comment-date">{{ reply.comment_added|date:"d M Y H:i" }}</span>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <a href="/profile/{{ comment.comment_user.id }}/" class="comment-author">{{ comment.comment_user.username }}</a>
+                                {% if comment.comment_user.is_superuser %}
+                                    <span class="admin-badge">Админ</span>
+                                {% else %}
+                                    <span class="user-badge">Пользователь</span>
+                                {% endif %}
+                            </div>
+                            <span class="comment-date">{{ comment.comment_added|date:"d M Y в H:i" }}</span>
                         </div>
                     </div>
-                    <div class="comment-body" style="margin-top:8px;">{{ reply.comment_text }}</div>
+
+                    <div class="comment-body">
+                        <p>{{ comment.comment_text|linebreaksbr }}</p>
+                    </div>
+
+                    {% for reply in comment.replies.all %}
+                    <div class="reply-item">
+                        <div class="reply-header">
+                            <div class="comment-avatar" style="width:40px;height:40px;">
+                                {% if reply.comment_user.user_avatar %}
+                                <img src="{{ reply.comment_user.user_avatar.url }}">
+                                {% else %}
+                                <div class="avatar-placeholder"><i class="fas fa-user"></i></div>
+                                {% endif %}
+                            </div>
+                            <div class="comment-meta">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span class="comment-author">{{ reply.comment_user.username }}</span>
+                                    {% if reply.comment_user.is_superuser %}
+                                        <span class="admin-badge">Админ</span>
+                                    {% endif %}
+                                </div>
+                                <span class="comment-date">{{ reply.comment_added|date:"d M Y H:i" }}</span>
+                            </div>
+                        </div>
+                        <div class="comment-body" style="margin-top:8px;">{{ reply.comment_text }}</div>
+                    </div>
+                    {% endfor %}
+
+                    <div class="comment-actions">
+                        <form class="like-form" data-id="{{ comment.id }}" method="post" action="/add/like/comment/{{ comment.id }}">
+                            {% csrf_token %}
+                            <button type="submit" class="action-btn like-btn">
+                                <i class="{% if comment.id in liked_comments %}fas{% else %}far{% endif %} fa-thumbs-up"
+                                   style="{% if comment.id in liked_comments %}color:red{% endif %}"></i>
+                                <span class="like-count">{{ comment.comment_likes|default:0 }}</span>
+                            </button>
+                        </form>
+                        <button type="button" class="action-btn reply-btn" onclick="toggleReply({{ comment.id }})">
+                            → Ответить
+                        </button>
+                    </div>
+
+                    <div class="reply-form" id="reply-form-{{ comment.id }}" style="display:none;">
+                        <form class="reply-form-ajax"
+                              data-id="{{ comment.id }}"
+                              action="/comment/reply/{{ comment.id }}"
+                              method="POST">
+                            {% csrf_token %}
+                            <textarea name="reply" placeholder="Напишите ответ..." required></textarea>
+                            <button type="submit" class="submit-comment-btn">
+                                <i class="fas fa-paper-plane"></i> Ответить
+                            </button>
+                        </form>
+                    </div>
                 </div>
                 {% endfor %}
-
-                <div class="comment-actions">
-                    <form class="like-form" data-id="{{ comment.id }}" method="post" action="/add/like/comment/{{ comment.id }}">
-                        {% csrf_token %}
-                        <button type="submit" class="action-btn like-btn">
-                            <i class="{% if comment.id in liked_comments %}fas{% else %}far{% endif %} fa-thumbs-up"
-                               style="{% if comment.id in liked_comments %}color:red{% endif %}"></i>
-                            <span class="like-count">{{ comment.comment_likes|default:0 }}</span>
-                        </button>
-                    </form>
-                    <button type="button" class="action-btn reply-btn" onclick="toggleReply({{ comment.id }})">
-                        <i class="far fa-reply"></i> Ответить
-                    </button>
-                </div>
-
-                <div class="reply-form" id="reply-form-{{ comment.id }}" style="display:none;">
-                    <form class="reply-form-ajax" ...>
-                        {% csrf_token %}
-                        <textarea name="reply" placeholder="Напишите ответ..." required></textarea>
-                        <button type="submit" class="submit-comment-btn">
-                            <i class="fas fa-paper-plane"></i> Ответить
-                        </button>
-                    </form>
-                </div>
             </div>
-            {% endfor %}
-        </div>
 
-        {% if not comments %}
-        <div id="no-comments" class="no-comments">
-            <p>Пока никто не оставил комментарий. Будьте первым!</p>
-        </div>
-        {% endif %}
-
-        <div class="comment-form-wrapper">
-            {% if user.is_authenticated %}
-                <form id="main-comment-form" method="POST" action="/comment/add/{{ film.id }}" class="comment-form">
-                    {% csrf_token %}
-                    <textarea name="comment" placeholder="Напишите ваш комментарий..." rows="4" required></textarea>
-                    <button type="submit" class="submit-comment-btn">
-                        <i class="fas fa-paper-plane"></i> Отправить
-                    </button>
-                </form>
-            {% else %}
-            <div class="login-required">
-                <i class="fas fa-comment-slash"></i>
-                <h3>Хотите оставить комментарий?</h3>
-                <p>Зарегистрируйтесь или войдите в аккаунт, чтобы участвовать в обсуждении фильма.</p>
-                <div class="auth-buttons">
-                    <a href="/login" class="login-btn">Войти</a>
-                    <a href="/register" class="register-btn">Зарегистрироваться</a>
-                </div>
+            {% if not comments %}
+            <div id="no-comments" class="no-comments">
+                <p>Пока никто не оставил комментарий. Будьте первым!</p>
             </div>
             {% endif %}
-        </div>
-    </section>
+
+            <div class="comment-form-wrapper">
+                {% if user.is_authenticated %}
+                    <form id="main-comment-form" method="POST" action="/comment/add/{{ film.id }}" class="comment-form">
+                        {% csrf_token %}
+                        <textarea name="comment" placeholder="Напишите ваш комментарий..." rows="4" required></textarea>
+                        <button type="submit" class="submit-comment-btn">
+                            <i class="fas fa-paper-plane"></i> Отправить
+                        </button>
+                    </form>
+                {% else %}
+                <div class="login-required">
+                    <i class="fas fa-comment-slash"></i>
+                    <h3>Хотите оставить комментарий?</h3>
+                    <p>Зарегистрируйтесь или войдите в аккаунт, чтобы участвовать в обсуждении фильма.</p>
+                    <div class="auth-buttons">
+                        <a href="/login" class="login-btn">Войти</a>
+                        <a href="/register" class="register-btn">Зарегистрироваться</a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </section>
 </main>
 
 <footer>© 2026 КиноМир — Все права защищены</footer>
 
-<script>
-function getCSRFToken() {
-    return document.querySelector('[name=csrfmiddlewaretoken]').value;
-}
+    <script src="{% static 'admin/js/project/film.js' %}"></script>
 
-async function ajaxSubmit(form, successCallback) {
-    const formData = new FormData(form);
-    try {
-        const response = await fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRFToken': getCSRFToken()
-            }
-        });
-        const data = await response.json();
-
-        if (data.success || data.html) {
-            successCallback(data);
-            form.reset();
-        } else {
-            alert(data.error || 'Ошибка при отправке');
-        }
-    } catch (e) {
-        alert('Ошибка соединения');
-    }
-}
-
-// Главный комментарий
-const mainForm = document.getElementById('main-comment-form');
-if (mainForm) {
-    mainForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        ajaxSubmit(this, function(data) {
-            const list = document.getElementById('comments-list');
-            const noComments = document.getElementById('no-comments');
-            if (noComments) noComments.style.display = 'none';
-
-            // Вставляем новый комментарий (используем html из бэкенда)
-            list.insertAdjacentHTML('afterbegin', data.html);
-        });
-    });
-}
-
-// Лайки
-document.addEventListener('submit', function(e) {
-    if (e.target.classList.contains('like-form')) {
-        e.preventDefault();
-        const form = e.target;
-        const countSpan = form.querySelector('.like-count');
-        const icon = form.querySelector('i');
-
-        ajaxSubmit(form, function(data) {
-            countSpan.textContent = data.likes;
-            if (data.liked) {
-                icon.classList.remove('far');
-                icon.classList.add('fas');
-                icon.style.color = 'red';
-            } else {
-                icon.classList.remove('fas');
-                icon.classList.add('far');
-                icon.style.color = '';
-            }
-        });
-    }
-});
-
-// Ответы
-document.addEventListener('submit', function(e) {
-    if (e.target.classList.contains('reply-form-ajax')) {
-        e.preventDefault();
-        const form = e.target;
-        const commentId = form.dataset.id;
-
-        ajaxSubmit(form, function(data) {
-            const parent = document.getElementById(`comment-${commentId}`);
-            const replyForm = document.getElementById(`reply-form-${commentId}`);
-            replyForm.style.display = 'none';
-
-            // Вставляем ответ
-            let repliesContainer = parent.querySelector('.reply-item:last-of-type');
-            if (repliesContainer) {
-                repliesContainer.insertAdjacentHTML('afterend', data.html);
-            } else {
-                const actions = parent.querySelector('.comment-actions');
-                actions.insertAdjacentHTML('afterend', data.html);
-            }
-        });
-    }
-});
-
-// Избранное
-const favForm = document.getElementById('favourite-form');
-if (favForm) {
-    favForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        ajaxSubmit(this, function(data) {
-            alert(data.message || 'Готово!');
-        });
-    });
-}
-
-// Toggle reply
-function toggleReply(id) {
-    const form = document.getElementById(`reply-form-${id}`);
-    document.querySelectorAll('.reply-form').forEach(el => {
-        if (el !== form) el.style.display = 'none';
-    });
-    form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
-}
-</script>
 </body>
 </html>

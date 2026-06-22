@@ -6,7 +6,7 @@ class UserRegister(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'password1','password2', 'user_avatar')
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1','password2', 'user_avatar')
 
 class Search:
     class Meta:
